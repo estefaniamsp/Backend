@@ -43,7 +43,7 @@ const loginPaciente = async (req, res) => {
 
     const { nombre, propietario, celular, convencional, _id } = pacienteBDD
 
-    res.status(200).json({ token, _id, nombre, propietario, email, celular, convencional })
+    res.status(200).json({ token, _id, nombre, propietario, email, celular, convencional, rol: 'paciente' })
 };
 
 const perfilPaciente = (req, res) => {
@@ -71,7 +71,7 @@ const listarPacientes = async (req, res) => {
 const detallePaciente = async (req, res) => {
     const { id } = req.params
     
-    const paciente = await Paciente.findById(id).where('veterinario').equals(req.veterinarioBDD).select('-createdAt -updatedAt -__v -password -tratamientos').populate('veterinario', 'nombre apellido')
+    const paciente = await Paciente.findById(id).select('-createdAt -updatedAt -__v -password -tratamientos').populate('veterinario', 'nombre apellido')
 
     const tratamientos = await Tratamiento.find({ estado: true }).where('paciente').equals(id)
 
